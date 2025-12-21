@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type person struct {
 	name string
@@ -62,11 +65,14 @@ func main() {
 	fmt.Println("The pramater is:", pramater)
 
 	var fruits = []string{"apple", "banana", "cherry"}
-	for _, fruit := range fruits {
-		fmt.Println("Fruit:", fruit)
+	for i, fruit := range fruits {
+		fmt.Println("Fruit:", i, "is", fruit)
 	}
 	for i := 0; i < len(fruits); i++ {
 		fmt.Println("Fruit at index", i, "is", fruits[i])
+	}
+	for _, fruit := range fruits {
+		fmt.Println("Fruit:", fruit)
 	}
 
 	person1 := person{"John", 30}
@@ -84,6 +90,24 @@ func main() {
 	person4 := person{name: "Charlie", age: 56}
 	fmt.Println("Person4 Name:", person4.name)
 	fmt.Println("Person4 Age:", person4.age)
+
+	//writing data to a file
+	file := "example.txt"
+	data := "Hello, this is a sample text."
+	err := writeToFile(file, data)
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+	} else {
+		fmt.Println("Data written to file successfully.")
+	}
+
+	//reading data from a file
+	content, err := os.ReadFile(file)
+	if err != nil {
+		fmt.Println("Error reading from file:", err)
+	} else {
+		fmt.Println("File content:", string(content))
+	}
 }
 
 func calculateArea(x int, y int) int {
@@ -94,4 +118,9 @@ func calculateArea(x int, y int) int {
 func calculatePramater(x int, y int) int {
 	var pramater = 2 * (x + y)
 	return pramater
+}
+
+// writeToFile writes the provided string data to filename and returns any error.
+func writeToFile(filename, data string) error {
+	return os.WriteFile(filename, []byte(data), 0644)
 }
